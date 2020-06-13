@@ -283,6 +283,29 @@ create(char *path, short type, short major, short minor)
 }
 
 int
+sys_lseek(void)
+{
+	struct file *f;
+	int offset;
+	int seek_mode;
+
+  // Returns reference to file 'fd' in struct file f
+  if(argfd(0, 0, &f) < 0)
+		return -1;
+  
+  // Fetches integer offset from argument of system call
+  if(argint(1, &offset) < 0)
+		return -1;
+  
+  // Fetches base (integer) from argument of system call 
+	if(argint(2, &seek_mode) < 0)
+		return -1;
+
+	return fileseek(f, offset, seek_mode);
+}
+
+
+int
 sys_open(void)
 {
   char *path;
